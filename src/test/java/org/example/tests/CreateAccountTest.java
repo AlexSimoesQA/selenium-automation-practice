@@ -2,7 +2,6 @@ package org.example.tests;
 
 import com.github.javafaker.Faker;
 import org.example.base.BaseTest;
-import org.example.enums.TextEnum;
 import org.example.pages.CreateAccountPage;
 import org.example.pages.HomePage;
 import org.example.pages.PersonalInformationPage;
@@ -11,6 +10,7 @@ import org.testng.annotations.Test;
 
 import static org.example.enums.ExceptionEnum.*;
 import static org.example.enums.TextEnum.*;
+import static org.example.utils.StaticValue.*;
 import static org.testng.Assert.*;
 
 public class CreateAccountTest extends BaseTest {
@@ -51,10 +51,10 @@ public class CreateAccountTest extends BaseTest {
         assertEquals(CREATE_ACCOUNT.getText(), heading);
 
         assertEquals(validEmail, personalInformationPage.getEmailValue());
-        personalInformationPage.selectTitle("Mr");
+        personalInformationPage.selectTitle(MR);
         personalInformationPage.enterFirstName(firstName);
         personalInformationPage.enterLastName(lastName);
-        personalInformationPage.enterPassword("password123");
+        personalInformationPage.enterPassword(PASSWORD);
         personalInformationPage.selectDateOfBirth("15", "5", "1990");
         personalInformationPage.subscribeToNewsletter();
 

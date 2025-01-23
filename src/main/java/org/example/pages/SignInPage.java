@@ -28,6 +28,12 @@ public class SignInPage extends BasePage {
     @FindBy(css = "p.alert-success")
     private WebElement successMessage;
 
+    @FindBy(css = "a.logout")
+    private WebElement logoutButton;
+
+    @FindBy(css = "p.info-account")
+    private WebElement infoAccountMessage;
+
     public void login(String email, String password) {
         type(emailField, email);
         type(passwordField, password);
@@ -40,5 +46,13 @@ public class SignInPage extends BasePage {
 
     public String getSuccessMessage() {
         return getText(successMessage);
+    }
+
+    public void logout() {
+        click(logoutButton);
+    }
+
+    public String getInfoAccountMessage() {
+        return getText(infoAccountMessage);
     }
 }
