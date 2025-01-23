@@ -2,14 +2,16 @@ package org.example.tests;
 
 import com.github.javafaker.Faker;
 import org.example.base.BaseTest;
+import org.example.enums.TextEnum;
 import org.example.pages.CreateAccountPage;
 import org.example.pages.HomePage;
+import org.example.pages.PersonalInformationPage;
 import org.example.pages.SignInPage;
 import org.testng.annotations.Test;
 
 import static org.example.enums.ExceptionEnum.*;
 import static org.example.enums.TextEnum.*;
-import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.*;
 
 public class CreateAccountTest extends BaseTest {
 
@@ -29,10 +31,14 @@ public class CreateAccountTest extends BaseTest {
     public void testCreateAccountWithValidEmail() {
         HomePage homePage = new HomePage(driver);
         CreateAccountPage createAccountPage = new CreateAccountPage(driver);
+        PersonalInformationPage personalInformationPage = new PersonalInformationPage(driver);
         SignInPage signInPage = new SignInPage(driver);
 
         Faker faker = new Faker();
         String validEmail = faker.internet().emailAddress();
+        String firstName = faker.name().firstName();
+        String lastName = faker.name().lastName();
+        String name = firstName + " " + lastName;
 
         homePage.clickSignIn();
         createAccountPage.typeEmailAddress(validEmail);
@@ -43,5 +49,20 @@ public class CreateAccountTest extends BaseTest {
         String heading = createAccountPage.getPageHeading();
 
         assertEquals(CREATE_ACCOUNT.getText(), heading);
+
+        assertEquals(validEmail, personalInformationPage.getEmailValue());
+        personalInformationPage.selectTitle("Mr");
+        personalInformationPage.enterFirstName(firstName);
+        personalInformationPage.enterLastName(lastName);
+        personalInformationPage.enterPassword("password123");
+        personalInformationPage.selectDateOfBirth("15", "5", "1990");
+        personalInformationPage.subscribeToNewsletter();
+
+        personalInformationPage.clickRegister();
+
+        String accountName = signInPage.getAccountName();
+        String successMessage = signInPage.getSuccessMessage();
+        assertEquals(name, accountName);
+        assertEquals(ACCOUNT_HAS_BEEN_CREATED.getText(), successMessage);
     }
 }
